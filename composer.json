@@ -23,6 +23,6 @@
         }
     },
     "extra": {
-        "class": "lleber\\Composer\\CloudHookInstallerPlugin"
+        "class": "lleber\\Composer\\CloudhookInstallerPlugin"
     }
 }
