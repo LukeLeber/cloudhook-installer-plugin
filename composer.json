@@ -2,22 +2,32 @@
     "name": "lleber/cloudhook-installer-plugin",
     "description": "A composer installer plugin for Acquia cloudhooks.",
     "type": "composer-plugin",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "autoload": {
+      "psr-4": {
+        "Drupal\\cloudhooks\\": "src/"
+      }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Drupal\\Tests\\cloudhooks\\": "tests/src/"
+      }
+    },
     "require": {
-        "composer/composer": "^1.8",
         "composer-plugin-api": "^1.1"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^7.5"
+    "suggest": {},
+    "scripts": {
+      "phpcs": "phpcs --standard=Drupal"
     },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Luke Leber",
-            "email": "lukeleber@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
+    "require-dev": {
+        "composer/composer": "^1.8",
+        "phpunit/phpunit": "^7.5",
+        "drupal/coder": "^8.3",
+        "mikey179/vfsstream": "^1.6"
+    },
     "extra": {
-        "class": "lleber\\Composer\\CloudHookInstallerPlugin"
+        "class": "Drupal\\cloudhooks\\Composer\\CloudhookPlugin"
     }
 }
