@@ -5,6 +5,7 @@ namespace lleber\Composer;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use lleber\Composer\Installer\CloudhookInstaller;
 
 class CloudhookInstallerPlugin implements PluginInterface {
 
