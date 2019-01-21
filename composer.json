@@ -17,6 +17,11 @@
         }
     ],
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "lleber\\": "src/"
+        }
+    },
     "extra": {
         "class": "lleber\\Composer\\CloudHookInstallerPlugin"
     }
