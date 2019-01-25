@@ -29,7 +29,7 @@ class CloudhookInstaller extends LibraryInstaller {
    * {@inheritDoc}
    */
   public function getInstallPath(PackageInterface $package) {
-    if(strpos($package->getPrettyName(), 'acquia/cloudhook-') !== 0) {
+    if($package->getPrettyName() !== 'acquia/cloudhook') {
       throw new \InvalidArgumentException(
         'Unable to install cloudhook, cloudhook packages ' .
         'should always start their package name with ' .
