@@ -22,6 +22,11 @@
             "lleber\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "lleber\\Tests\\": "tests/src"
+        }
+    },
     "extra": {
         "class": "lleber\\Composer\\CloudhookInstallerPlugin"
     }
