@@ -6,7 +6,11 @@
     "minimum-stability": "stable",
     "autoload": {
       "psr-4": {
-        "Drupal\\cloudhooks\\": "src/",
+        "Drupal\\cloudhooks\\": "src/"
+      }
+    },
+    "autoload-dev": {
+      "psr-4": {
         "Drupal\\Tests\\cloudhooks\\": "tests/src/"
       }
     },
