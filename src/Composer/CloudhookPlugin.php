@@ -1,6 +1,6 @@
 <?php
 
-namespace lleber\Composer;
+namespace Drupal\cloudhooks\Composer;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -8,16 +8,69 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use lleber\Acquia\Cloudhooks;
-use lleber\Composer\Installer\CloudhookInstaller;
+use Drupal\cloudhooks\HookRepository;
+use Drupal\cloudhooks\Composer\Installer\CloudhookInstaller;
 
-class CloudhookPlugin implements EventSubscriberInterface, PluginInterface {
+/**
+ * Class CloudhookPlugin.
+ *
+ * @package lleber\Composer
+ */
+class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterface, PluginInterface {
+
+  /**
+   * The relative filesystem path that hooks are installed to.
+   *
+   * @var string
+   */
+  const HOOK_INSTALL_DIR = './hooks';
+
+  /**
+   * The hook repository service.
+   *
+   * @var \Drupal\cloudhooks\HookRepository
+   */
+  protected $hook_repository;
+
+  /**
+   * The installer service.
+   *
+   * @var \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller
+   */
+  protected $installer;
+
+  /**
+   * CloudhookPlugin constructor.
+   */
+  public function __construct() {
+    $this->hook_repository = new HookRepository();
+  }
+
+  /**
+   * Retrieves the installer service.
+   *
+   * @TODO: This is not testable.
+   *
+   * @param \Composer\Composer $composer
+   *   The composer instance.
+   * @param \Composer\IO\IOInterface $io
+   *   The IO instance.
+   *
+   * @return \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller
+   *   The installer service.
+   */
+  protected function getInstaller(Composer $composer, IOInterface $io) {
+    if (!$this->installer) {
+      $this->installer = new CloudhookInstaller($io, $composer, $this->hook_repository);
+    }
+    return $this->installer;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function activate(Composer $composer, IOInterface $io) {
-    $installer = new CloudhookInstaller($io, $composer);
+    $installer = $this->getInstaller($composer, $io);
     $composer->getInstallationManager()->addInstaller($installer);
   }
 
@@ -32,21 +85,10 @@ class CloudhookPlugin implements EventSubscriberInterface, PluginInterface {
   }
 
   /**
-   * Installs all registered hooks to the proper directory.
-   *
-   * @param \Composer\Script\Event $event
-   *   The script event that triggered this callback.
+   * {@inheritdoc}
    */
-  public static function installHooks(Event $event) {
-
-    $hooks = Cloudhooks::getHooks();
-    foreach($hooks as $hook_config) {
-      $hook = $hook_config['hook'];
-      $event = $hook_config['event'];
-      $environment = $hook_config['environment'];
-      $priority = $hook_config['priority'];
-
-      echo "Installing {$hook} on {$environment} that fires on {$event} in {$priority} order.";
-    }
+  public function installHooks(Event $event) {
+    $this->hook_repository->getHooks();
   }
+
 }

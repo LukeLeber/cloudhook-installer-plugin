@@ -1,15 +1,17 @@
 <?php
 
-namespace lleber\Composer\Installer;
+namespace Drupal\cloudhooks\Composer\Installer;
 
+use Composer\Composer;
 use Composer\Installer\LibraryInstaller;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
-use lleber\Acquia\Cloudhooks;
+use Drupal\cloudhooks\HookRepositoryInterface;
 
-class CloudhookInstaller extends LibraryInstaller {
+class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerInterface {
 
-  const EXTRA_KEY = 'acquia-cloud-hooks';
+  const EXTRA_KEY = 'cloud-hooks';
 
   /**
    * The path that all hooks must be installed to.
@@ -18,26 +20,30 @@ class CloudhookInstaller extends LibraryInstaller {
    */
   const HOOK_PATH = 'hooks';
 
-  /**
-   * {@inheritDoc}
-   */
-  public function supports($packageType) {
-    return 'acquia-cloudhook' === $packageType;
-  }
+  const REQUIRED_KEYS = ['class', 'events', 'environments', 'priority'];
+
+  const VALID_HOOK_TYPES = ['post-code-deploy', 'post-code-update', 'post-db-copy', 'post-files-copy'];
 
   /**
-   * {@inheritDoc}
+   * The hook repository service.
+   *
+   * @var \Drupal\cloudhooks\HookRepository
    */
-  public function getInstallPath(PackageInterface $package) {
-    if($package->getPrettyName() !== 'acquia/cloudhook') {
-      throw new \InvalidArgumentException(
-        'Unable to install cloudhook, cloudhook packages ' .
-        'should always start their package name with ' .
-        '"acquia/cloudhook-"'
-      );
-    }
+  protected $hook_repository;
 
-    return static::HOOK_PATH;
+  /**
+   * CloudhookInstaller constructor.
+   *
+   * @param \Composer\IO\IOInterface $io
+   *   The IO service.
+   * @param \Composer\Composer $composer
+   *   The composer service.
+   * @param \Drupal\cloudhooks\HookRepository $hook_repository
+   *   The hook repository service.
+   */
+  public function __construct(IOInterface $io, Composer $composer, HookRepositoryInterface $hook_repository) {
+    parent::__construct($io, $composer, 'library', NULL, NULL);
+    $this->hook_repository = $hook_repository;
   }
 
   /**
@@ -45,15 +51,17 @@ class CloudhookInstaller extends LibraryInstaller {
    */
   public function install(InstalledRepositoryInterface $repo, PackageInterface $package) {
     parent::install($repo, $package);
+    foreach ($this->getHooks($package) as $hook_config) {
+      $this->validate($hook_config);
 
-    foreach($this->getCloudhooks($package) as $hook => $hook_config) {
+      $class = $hook_config['class'];
       $events = $hook_config['events'];
       $environments = $hook_config['environments'];
       $priority = $hook_config['priority'];
 
-      foreach($events as $event) {
-        foreach($environments as $environment) {
-          Cloudhooks::register($hook, $event, $environment, $priority);
+      foreach ($events as $event) {
+        foreach ($environments as $environment) {
+          $this->hook_repository->register($class, $event, $environment, $priority);
         }
       }
     }
@@ -68,7 +76,7 @@ class CloudhookInstaller extends LibraryInstaller {
    * @return array
    *   The cloudhooks provided by the package.
    */
-  protected function getCloudhooks(PackageInterface $package) {
+  protected function getHooks(PackageInterface $package) {
     $hooks = [];
 
     $extra = $package->getExtra();
@@ -77,5 +85,41 @@ class CloudhookInstaller extends LibraryInstaller {
     }
 
     return $hooks;
+  }
+
+  /**
+   * Validates the provided hook configuration array.
+   *
+   * @param array $hook_config
+   *   The hook configuration to validate.
+   *
+   * @throws \InvalidArgumentException
+   *   If the configuration array fails validation.
+   */
+  protected function validate(array $hook_config) {
+
+    foreach (static::REQUIRED_KEYS as $required_key) {
+      if (!\array_key_exists($required_key, $hook_config)) {
+        throw new \InvalidArgumentException(sprintf('Unable to install cloudhook.  Required configuration key "%s" is missing.', $required_key));
+      }
+    }
+
+    if (!\ctype_digit((string) $hook_config['priority'])) {
+      throw new \InvalidArgumentException(sprintf('Unable to install cloudhook.  Priority "%s" is not an integer.', (string) $hook_config['priority']));
+    }
+
+    if (!is_array($hook_config['events'])) {
+      throw new \InvalidArgumentException(sprintf('Unable to install cloudhook.  Events are not in an acceptable format.'));
+    }
+
+    foreach ($hook_config['events'] as $event) {
+      if (!in_array($event, static::VALID_HOOK_TYPES)) {
+        throw new \InvalidArgumentException(sprintf('Unable to install cloudhook.  Event "%s" is not a recognized hook type.', $event));
+      }
+    }
+
+    if (!is_array($hook_config['environments'])) {
+      throw new \InvalidArgumentException(sprintf('Unable to install cloudhook.  Environments are not in an acceptable format.'));
+    }
   }
 }
