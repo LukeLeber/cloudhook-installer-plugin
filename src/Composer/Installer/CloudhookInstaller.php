@@ -11,6 +11,8 @@ use Drupal\cloudhooks\HookRepositoryInterface;
 
 class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerInterface {
 
+  const PLUGIN_TYPE = 'acquia-cloudhook';
+
   const EXTRA_KEY = 'cloud-hooks';
 
   /**
@@ -20,14 +22,24 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    */
   const HOOK_PATH = 'hooks';
 
-  const REQUIRED_KEYS = ['class', 'events', 'environments', 'priority'];
+  const REQUIRED_KEYS = [
+    'class',
+    'events',
+    'environments',
+    'priority',
+  ];
 
-  const VALID_HOOK_TYPES = ['post-code-deploy', 'post-code-update', 'post-db-copy', 'post-files-copy'];
+  const VALID_HOOK_TYPES = [
+    'post-code-deploy',
+    'post-code-update',
+    'post-db-copy',
+    'post-files-copy',
+  ];
 
   /**
    * The hook repository service.
    *
-   * @var \Drupal\cloudhooks\HookRepository
+   * @var \Drupal\cloudhooks\HookRepositoryInterface
    */
   protected $hook_repository;
 
@@ -44,6 +56,13 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
   public function __construct(IOInterface $io, Composer $composer, HookRepositoryInterface $hook_repository) {
     parent::__construct($io, $composer, 'library', NULL, NULL);
     $this->hook_repository = $hook_repository;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function supports($packageType) {
+    return static::PLUGIN_TYPE === $packageType;
   }
 
   /**
