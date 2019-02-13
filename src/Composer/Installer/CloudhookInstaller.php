@@ -9,9 +9,19 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Drupal\cloudhooks\HookRepositoryInterface;
 
+/**
+ * Class CloudhookInstaller.
+ *
+ * @package Drupal\cloudhooks\Composer\Installer
+ */
 class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerInterface {
 
-  const PLUGIN_TYPE = 'acquia-cloudhook';
+  /**
+   * The type of plugin that is supported by this installer.
+   *
+   * @var string
+   */
+  const SUPPORTED_PLUGIN_TYPE = 'acquia-cloudhook';
 
   const EXTRA_KEY = 'cloud-hooks';
 
@@ -50,7 +60,7 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    *   The IO service.
    * @param \Composer\Composer $composer
    *   The composer service.
-   * @param \Drupal\cloudhooks\HookRepository $hook_repository
+   * @param \Drupal\cloudhooks\HookRepositoryInterface $hook_repository
    *   The hook repository service.
    */
   public function __construct(IOInterface $io, Composer $composer, HookRepositoryInterface $hook_repository) {
@@ -62,7 +72,7 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    * {@inheritdoc}
    */
   public function supports($packageType) {
-    return static::PLUGIN_TYPE === $packageType;
+    return static::SUPPORTED_PLUGIN_TYPE === $packageType;
   }
 
   /**

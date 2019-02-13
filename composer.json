@@ -1,5 +1,5 @@
 {
-    "name": "drupal/cloudhooks",
+    "name": "lleber/cloudhook-installer-plugin",
     "description": "A composer installer plugin for Acquia cloudhooks.",
     "type": "composer-plugin",
     "license": "MIT",
@@ -25,7 +25,7 @@
         "composer/composer": "^1.8",
         "phpunit/phpunit": "^7.5",
         "drupal/coder": "^8.3",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsstream": "^1.6"
     },
     "extra": {
         "class": "Drupal\\cloudhooks\\Composer\\CloudhookPlugin"
