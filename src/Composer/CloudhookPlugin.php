@@ -72,6 +72,9 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
   public function activate(Composer $composer, IOInterface $io) {
     $installer = $this->getInstaller($composer, $io);
     $composer->getInstallationManager()->addInstaller($installer);
+    if($io->isVerbose()) {
+      $io->write('Activating cloudhook plugin.');
+    }
   }
 
   /**
@@ -88,6 +91,7 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
    * {@inheritdoc}
    */
   public function installHooks(Event $event) {
+    echo 'Post-install or update.';
     $this->hookRepository->getHooks();
   }
 
