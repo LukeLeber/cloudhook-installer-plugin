@@ -72,7 +72,11 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    * {@inheritdoc}
    */
   public function supports($packageType) {
-    return static::SUPPORTED_PLUGIN_TYPE === $packageType;
+    $supports = static::SUPPORTED_PLUGIN_TYPE === $packageType;
+    if ($this->io->isVerbose()) {
+      $this->io->write("Is the {$packageType} supported? " . ($supports ? 'Yes' : 'No'));
+    }
+    return $supports;
   }
 
   /**
