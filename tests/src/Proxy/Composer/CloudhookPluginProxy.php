@@ -15,20 +15,6 @@ use Drupal\cloudhooks\Composer\Installer\CloudhookInstaller;
  */
 class CloudhookPluginProxy extends CloudhookPlugin {
 
-  /**
-   * A mocked instance of a hook repository.
-   *
-   * @var \Drupal\cloudhooks\HookRepository
-   */
-  protected $hook_repository;
-
-  /**
-   * A mocked instance of an installer.
-   *
-   * @var \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller
-   */
-  protected $installer;
-
   /* @noinspection PhpMissingParentConstructorInspection */
 
   /**
@@ -40,7 +26,7 @@ class CloudhookPluginProxy extends CloudhookPlugin {
    *   A mocked installer object.
    */
   public function __construct(HookRepository $hook_repository, CloudhookInstaller $installer) {
-    $this->hook_repository = $hook_repository;
+    $this->hookRepository = $hook_repository;
     $this->installer = $installer;
   }
 
@@ -51,7 +37,7 @@ class CloudhookPluginProxy extends CloudhookPlugin {
    *   A mocked version of the hook repository.
    */
   public function getHookRepository() {
-    return $this->hook_repository;
+    return $this->hookRepository;
   }
 
   /**

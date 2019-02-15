@@ -84,7 +84,7 @@ class CloudhookInstallerTest extends TestCase {
       ->method('getExtra')
       ->willReturn($extra);
 
-    $this->installer->hook_repository
+    $this->installer->hookRepository
       ->expects(self::exactly(12))
       ->method('register');
 

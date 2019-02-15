@@ -51,7 +51,7 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    *
    * @var \Drupal\cloudhooks\HookRepositoryInterface
    */
-  protected $hook_repository;
+  protected $hookRepository;
 
   /**
    * CloudhookInstaller constructor.
@@ -65,7 +65,7 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    */
   public function __construct(IOInterface $io, Composer $composer, HookRepositoryInterface $hook_repository) {
     parent::__construct($io, $composer, 'library', NULL, NULL);
-    $this->hook_repository = $hook_repository;
+    $this->hookRepository = $hook_repository;
   }
 
   /**
@@ -90,7 +90,7 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
 
       foreach ($events as $event) {
         foreach ($environments as $environment) {
-          $this->hook_repository->register($class, $event, $environment, $priority);
+          $this->hookRepository->register($class, $event, $environment, $priority);
         }
       }
     }

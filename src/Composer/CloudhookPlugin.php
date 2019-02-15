@@ -30,7 +30,7 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
    *
    * @var \Drupal\cloudhooks\HookRepository
    */
-  protected $hook_repository;
+  protected $hookRepository;
 
   /**
    * The installer service.
@@ -43,13 +43,11 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
    * CloudhookPlugin constructor.
    */
   public function __construct() {
-    $this->hook_repository = new HookRepository();
+    $this->hookRepository = new HookRepository();
   }
 
   /**
    * Retrieves the installer service.
-   *
-   * @TODO: This is not testable.
    *
    * @param \Composer\Composer $composer
    *   The composer instance.
@@ -58,10 +56,12 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
    *
    * @return \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller
    *   The installer service.
+   *
+   * @TODO: This is not testable.
    */
   protected function getInstaller(Composer $composer, IOInterface $io) {
     if (!$this->installer) {
-      $this->installer = new CloudhookInstaller($io, $composer, $this->hook_repository);
+      $this->installer = new CloudhookInstaller($io, $composer, $this->hookRepository);
     }
     return $this->installer;
   }
@@ -88,7 +88,7 @@ class CloudhookPlugin implements CloudhookPluginInterface, EventSubscriberInterf
    * {@inheritdoc}
    */
   public function installHooks(Event $event) {
-    $this->hook_repository->getHooks();
+    $this->hookRepository->getHooks();
   }
 
 }

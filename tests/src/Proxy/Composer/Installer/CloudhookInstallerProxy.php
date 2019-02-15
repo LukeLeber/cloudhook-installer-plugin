@@ -16,30 +16,63 @@ use Drupal\cloudhooks\HookRepositoryInterface;
  */
 class CloudhookInstallerProxy extends CloudhookInstaller {
 
-  /* @var $hook_repository \Drupal\cloudhooks\HookRepositoryInterface|\PHPUnit\Framework\MockObject\MockObject */
-  public $hook_repository;
+  /**
+   * Mocked hook repository service.
+   *
+   * @var \Drupal\cloudhooks\HookRepositoryInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  public $hookRepository;
 
-  /* @var $binaryInstaller \Composer\Installer\BinaryInstaller|\PHPUnit\Framework\MockObject\MockObject */
+  /**
+   * Mocked binary installer service.
+   *
+   * @var \Composer\Installer\BinaryInstaller|\PHPUnit\Framework\MockObject\MockObject
+   */
   public $binaryInstaller;
 
+  /**
+   * CloudhookInstallerProxy constructor.
+   *
+   * @param \Composer\IO\IOInterface $io
+   * @param \Composer\Composer $composer
+   * @param \Composer\Installer\BinaryInstaller $binary_installer
+   * @param \Drupal\cloudhooks\HookRepositoryInterface $hook_repository
+   */
   public function __construct(IOInterface $io, Composer $composer, BinaryInstaller $binary_installer, HookRepositoryInterface $hook_repository) {
-    $this->hook_repository = $hook_repository;
+    $this->hookRepository = $hook_repository;
     $this->binaryInstaller = $binary_installer;
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * Made public for testing purposes.
+   */
   public function getHooks(PackageInterface $package) {
     return parent::getHooks($package);
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * Made public for testing purposes.
+   */
   public function validate(array $hook_config) {
     parent::validate($hook_config);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function initializeVendorDir() {
     // no-op.
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function installCode(PackageInterface $package) {
     // no-op.
   }
+
 }
