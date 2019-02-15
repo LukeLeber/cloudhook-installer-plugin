@@ -68,6 +68,10 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
     $this->hookRepository = $hook_repository;
   }
 
+  public function isInstalled(InstalledRepositoryInterface $repo, PackageInterface $package) {
+    return FALSE;
+  }
+
   /**
    * {@inheritdoc}
    */
