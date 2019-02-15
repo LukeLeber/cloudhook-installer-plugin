@@ -79,6 +79,9 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    * {@inheritdoc}
    */
   public function install(InstalledRepositoryInterface $repo, PackageInterface $package) {
+    if($this->io->isVerbose()) {
+      $this->io->write('Install called.');
+    }
     parent::install($repo, $package);
     foreach ($this->getHooks($package) as $hook_config) {
       $this->validate($hook_config);
