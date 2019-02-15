@@ -68,6 +68,11 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
     $this->hookRepository = $hook_repository;
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * Always reinstall the files.
+   */
   public function isInstalled(InstalledRepositoryInterface $repo, PackageInterface $package) {
     return FALSE;
   }
@@ -76,20 +81,13 @@ class CloudhookInstaller extends LibraryInstaller implements CloudhookInstallerI
    * {@inheritdoc}
    */
   public function supports($packageType) {
-    $supports = static::SUPPORTED_PLUGIN_TYPE === $packageType;
-    if ($this->io->isVerbose()) {
-      $this->io->write("Is the {$packageType} supported? " . ($supports ? 'Yes' : 'No'));
-    }
-    return $supports;
+    return static::SUPPORTED_PLUGIN_TYPE === $packageType;
   }
 
   /**
    * {@inheritdoc}
    */
   public function install(InstalledRepositoryInterface $repo, PackageInterface $package) {
-    if($this->io->isVerbose()) {
-      $this->io->write('Install called.');
-    }
     parent::install($repo, $package);
     foreach ($this->getHooks($package) as $hook_config) {
       $this->validate($hook_config);

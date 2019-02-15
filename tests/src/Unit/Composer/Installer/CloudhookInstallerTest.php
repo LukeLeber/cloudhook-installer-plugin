@@ -59,6 +59,64 @@ class CloudhookInstallerTest extends TestCase {
   }
 
   /**
+   * Test case for the ::isInstalled method.
+   *
+   * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::isInstalled
+   */
+  public function testIsInstalled() {
+
+    /* @var $repo_mock \Composer\Repository\InstalledRepositoryInterface|\PHPUnit\Framework\MockObject\MockObject */
+    $repo_mock = $this->getMockBuilder(InstalledRepositoryInterface::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    /* @var $package_mock \Composer\Package\PackageInterface|\PHPUnit\Framework\MockObject\MockObject */
+    $package_mock = $this->getMockBuilder(PackageInterface::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    static::assertFalse($this->installer->isInstalled($repo_mock, $package_mock));
+  }
+
+  /**
+   * Test case for the ::supports method.
+   *
+   * @param array $data
+   *   The sample data passed in from the provider.
+   *
+   * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::supports
+   *
+   * @dataProvider supportsProvider
+   */
+  public function testSupports(array $data) {
+    $actual = $this->installer->supports($data['package']);
+    static::assertEquals($data['expected'], $actual);
+  }
+
+  /**
+   * Data provider for ::testSupports.
+   *
+   * @return array
+   *   Sample data.
+   */
+  public function supportsProvider() {
+    return [
+      'true' => [
+        [
+          'expected' => TRUE,
+          'package' => 'acquia-cloudhook',
+        ],
+      ],
+      'false' => [
+        [
+          'expected' => FALSE,
+          'package' => 'not-acquia-cloudhook',
+        ],
+      ],
+    ];
+  }
+
+  /**
    * Test case for the ::install method.
    *
    * @param array $extra
