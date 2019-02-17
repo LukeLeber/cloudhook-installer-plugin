@@ -161,6 +161,7 @@ class CloudhookInstallerTest extends TestCase {
    *   The sample data passed in from the provider.
    *
    * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::install
+   * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::installHook
    *
    * @dataProvider installProvider
    */
@@ -298,6 +299,8 @@ class CloudhookInstallerTest extends TestCase {
    *   The sample data passed in from the provider.
    *
    * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::validate
+   * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::validateRequiredKeys
+   * @covers \Drupal\cloudhooks\Composer\Installer\CloudhookInstaller::validateEvents
    *
    * @dataProvider hookProvider
    */

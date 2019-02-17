@@ -1,5 +1,4 @@
 <phpunit
-  bootstrap="./tests/Bootstrap.php"
   colors="true"
   convertErrorsToExceptions="true"
   convertWarningsToExceptions="true"
