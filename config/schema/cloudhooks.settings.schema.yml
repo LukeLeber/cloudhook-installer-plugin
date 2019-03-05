@@ -1,0 +1,13 @@
+cloudhooks.cloudhook.*:
+  type: config_entity
+  label: 'Cloudhook config'
+  mapping:
+    id:
+      type: string
+      label: 'Id'
+    label:
+      type: label
+      label: 'Label'
+    weight:
+      type: integer
+      label: 'Weight'

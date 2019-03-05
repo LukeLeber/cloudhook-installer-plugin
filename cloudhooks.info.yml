@@ -1,0 +1,6 @@
+name: Cloudhooks
+type: module
+description: 'Test...'
+package: Contrib
+version: VERSION
+core: 8.x

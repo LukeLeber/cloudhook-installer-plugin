@@ -1,0 +1,13 @@
+environments:
+  dev:
+    label: Development
+    hooks:
+      - {label: 'Test', plugin_id: 'test', weight: 4}
+  test:
+    label: Test
+    hooks:
+    - {label: 'Test', plugin_id: 'test', weight: 4}
+  prod:
+    label: Production
+    hooks:
+    - {label: 'Test', plugin_id: 'test', weight: 4}
