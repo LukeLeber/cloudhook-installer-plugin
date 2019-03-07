@@ -8,7 +8,6 @@ use Drupal\cloudhooks\Event\PostCodeDeployEvent;
 use Drupal\cloudhooks\Event\PostCodeUpdateEvent;
 use Drupal\cloudhooks\Event\PostDatabaseCopyEvent;
 use Drupal\cloudhooks\Event\PostFilesCopyEvent;
-use Drupal\cloudhooks\Plugin\Cloudhook\PostCodeDeployPluginInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,7 +85,7 @@ class CloudhookEventSubscriber implements EventSubscriberInterface {
     });
 
     // Map each hook to its plugin type.
-    $plugins = array_map(function(CloudhookInterface $hook) {
+    $plugins = array_map(function (CloudhookInterface $hook) {
       $plugin_id = $hook->getPluginId();
       return $this->cloudhookPluginManager->createInstance($plugin_id);
     }, $hooks);
@@ -94,12 +93,24 @@ class CloudhookEventSubscriber implements EventSubscriberInterface {
     return $plugins;
   }
 
+  /**
+   * Creates a log entry that the provided event is starting.
+   *
+   * @param string $event
+   *   The event that is starting.
+   */
   protected function logStarting($event) {
     $this->logger->notice('Cloudhook event "@event" is starting.', [
       '@event' => $event,
     ]);
   }
 
+  /**
+   * Creates a log entry that the provided event has finished.
+   *
+   * @param string $event
+   *   The event that has finished.
+   */
   protected function logFinished($event) {
     $this->logger->notice('Cloudhook event "@event" has completed.', [
       '@event' => $event,

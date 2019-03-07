@@ -51,5 +51,4 @@ interface CloudhookInterface extends ConfigEntityInterface {
    */
   public function getPluginId();
 
-  public function getEventLabel();
 }

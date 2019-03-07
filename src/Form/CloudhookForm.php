@@ -10,6 +10,9 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * The entity form for the cloudhook configuration entity.
+ */
 class CloudhookForm extends EntityForm {
 
   /**
@@ -66,7 +69,7 @@ class CloudhookForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $default_label,
-      '#description' => $this->t("Label for the Example."),
+      '#description' => $this->t("Label for the cloudhook."),
       '#required' => TRUE,
     ];
 
@@ -93,13 +96,14 @@ class CloudhookForm extends EntityForm {
     ];
 
     $plugins = array_map(
-      function($plugin) {
+      function ($plugin) {
         return $plugin['label'];
       }, $this->cloudhookPluginManager->getDefinitions()
     );
     $form['plugin_id'] = [
       '#type' => 'select',
       '#title' => 'Cloudhook plugin',
+      '#default_value' => $entity->get('plugin_id'),
       '#options' => $plugins,
       '#required' => TRUE,
     ];

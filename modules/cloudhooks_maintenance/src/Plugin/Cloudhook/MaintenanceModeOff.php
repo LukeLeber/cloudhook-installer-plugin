@@ -26,4 +26,5 @@ class MaintenanceModeOff extends MaintenanceModeBase {
   protected function getMaintenanceModeState() {
     return FALSE;
   }
+
 }

@@ -1,4 +1,3 @@
 administer cloudhooks:
   title: 'Administer cloudhooks'
-  description: 'Optional description.'
   restrict access: true

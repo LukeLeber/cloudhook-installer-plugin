@@ -1,21 +1,24 @@
 <?php
 
-namespace Drupal\cloudhooks\Controller;
+namespace Drupal\cloudhooks;
 
-use Drupal\cloudhooks\CloudhookInterface;
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
+/**
+ * This list builder is used if the views module is unavailable.
+ *
+ * @package Drupal\cloudhooks\Controller
+ */
 class CloudhookListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
    */
   public function buildHeader() {
-    $header['id'] = $this->t('Id');
     $header['label'] = $this->t('Label');
-    $header['event'] = $this->t('Event');
     $header['plugin_id'] = $this->t('Plugin id');
+    $header['event'] = $this->t('Event');
     $header['weight'] = $this->t('Weight');
     return $header + parent::buildHeader();
   }
@@ -26,10 +29,9 @@ class CloudhookListBuilder extends ConfigEntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\cloudhooks\CloudhookInterface */
 
-    $row['id'] = $entity->id();
     $row['label'] = $entity->label();
-    $row['event'] = $entity->getEventLabel();
     $row['plugin_id'] = $entity->getPluginId();
+    $row['event'] = $entity->getEvent();
     $row['weight'] = $entity->get('weight');
     return $row + parent::buildRow($entity);
   }
@@ -40,10 +42,11 @@ class CloudhookListBuilder extends ConfigEntityListBuilder {
   public function load() {
     $entities = parent::load();
 
-    // Sort by event
-    uasort($entities, function(CloudhookInterface $lhs, CloudhookInterface $rhs) {
+    // Sort by event name.
+    uasort($entities, function (CloudhookInterface $lhs, CloudhookInterface $rhs) {
       $result = strnatcmp($lhs->getEvent(), $rhs->getEvent());
 
+      // Inner sort by weight.
       if ($result === 0) {
         $result = $lhs->getWeight() - $rhs->getWeight();
       }
@@ -52,4 +55,5 @@ class CloudhookListBuilder extends ConfigEntityListBuilder {
 
     return $entities;
   }
+
 }

@@ -48,12 +48,13 @@ class CloudhookPluginManager extends DefaultPluginManager implements CloudhookPl
    * {@inheritdoc}
    */
   public function getDefinitionsForEvent($event) {
-    $definitions = array_filter($this->getDefinitions(), function($definition) use($event) {
+    $definitions = array_filter($this->getDefinitions(), function ($definition) use ($event) {
       return in_array($event, $definition['events']);
     });
-    uasort($definitions, function($a, $b) {
+    uasort($definitions, function ($a, $b) {
       return $a['weight'] - $b['weight'];
     });
     return $definitions;
   }
+
 }

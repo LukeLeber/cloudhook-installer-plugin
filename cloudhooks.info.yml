@@ -1,6 +1,6 @@
 name: Cloudhooks
 type: module
-description: 'Test...'
+description: 'Provides a bridge between the Acquia platform cloudhook events and Drupal.'
 package: Contrib
 version: VERSION
 core: 8.x

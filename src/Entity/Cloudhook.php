@@ -13,7 +13,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *   id = "cloudhook",
  *   label = @Translation("Cloudhook"),
  *   handlers = {
- *     "list_builder" = "Drupal\cloudhooks\Controller\CloudhookListBuilder",
+ *     "list_builder" = "Drupal\cloudhooks\CloudhookListBuilder",
  *     "form" = {
  *       "add" = "Drupal\cloudhooks\Form\CloudhookForm",
  *       "edit" = "Drupal\cloudhooks\Form\CloudhookForm",
@@ -43,32 +43,74 @@ class Cloudhook extends ConfigEntityBase implements CloudhookInterface {
 
   use StringTranslationTrait;
 
+  /**
+   * The id of the cloudhook.
+   *
+   * @var string
+   */
   protected $id;
+
+  /**
+   * The label of the cloudhook.
+   *
+   * @var string
+   */
   protected $label;
+
+  /**
+   * The plugin id of the cloudhook.
+   *
+   * @var string
+   */
   protected $plugin_id;
+
+  /**
+   * The event of the cloudhook.
+   *
+   * @var string
+   */
   protected $event;
+
+  /**
+   * The weight of the cloudhook.
+   *
+   * @var int
+   */
   protected $weight;
 
+  /**
+   * {@inheritdoc}
+   */
   public function getId() {
     return $this->id;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLabel() {
     return $this->label;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getPluginId() {
     return $this->plugin_id;
   }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWeight() {
     return $this->weight;
   }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getEvent() {
     return $this->event;
-  }
-
-  public function getEventLabel() {
-    return $this->getEvent();
   }
 
 }

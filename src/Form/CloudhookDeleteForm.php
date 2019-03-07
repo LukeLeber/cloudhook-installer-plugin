@@ -6,19 +6,23 @@ use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
+/**
+ * The entity delete form for the cloudhook configuration entity.
+ */
 class CloudhookDeleteForm extends EntityConfirmFormBase {
+
   /**
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete %name?', array('%name' => $this->entity->label()));
+    return $this->t('Are you sure you want to delete %name?', ['%name' => $this->entity->label()]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('entity.example.collection');
+    return new Url('entity.cloudhook.collection');
   }
 
   /**
@@ -36,8 +40,10 @@ class CloudhookDeleteForm extends EntityConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->delete();
-    $this->messenger()->addMessage($this->t('Entity %label has been deleted.', array('%label' => $this->entity->label())));
+
+    $this->messenger()->addMessage($this->t('Deleted the %label cloudhook configuration.', ['%label' => $this->entity->label()]));
 
     $form_state->setRedirectUrl($this->getCancelUrl());
   }
+
 }

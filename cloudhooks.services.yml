@@ -3,11 +3,9 @@ services:
     class: 'Psr\Logging\LoggerInterface'
     factory: 'logger.factory:get'
     arguments: ['cloudhooks']
-
   plugin.manager.cloudhook:
     class: Drupal\cloudhooks\CloudhookPluginManager
     parent: default_plugin_manager
-
   cloudhook.event_subscriber:
     class: '\Drupal\cloudhooks\EventSubscriber\CloudhookEventSubscriber'
     arguments:

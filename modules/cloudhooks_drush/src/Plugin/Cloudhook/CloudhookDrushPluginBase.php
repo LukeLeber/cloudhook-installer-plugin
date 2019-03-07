@@ -7,6 +7,9 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class CloudhookDrushPluginBase extends CloudhookPluginBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -16,11 +19,17 @@ class CloudhookDrushPluginBase extends CloudhookPluginBase implements ContainerF
    */
   protected $logger;
 
+  /**
+   *
+   */
   public function __construct(array $configuration, string $plugin_id, $plugin_definition, LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->logger = $logger;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
 
     /* @var $logger \Psr\Log\LoggerInterface */

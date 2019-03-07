@@ -32,10 +32,16 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
 
   use StringTranslationTrait;
 
+  /**
+   *
+   */
   protected function getConfigurationFileLocation() {
     return "{$_SERVER['HOME']}/.slack";
   }
 
+  /**
+   *
+   */
   protected function getConfiguration() {
 
     $configuration = NULL;
@@ -49,7 +55,7 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
         '@location' => $this->getConfigurationFileLocation(),
       ]);
     }
-    foreach(['channel'] as $required_key) {
+    foreach (['channel'] as $required_key) {
       if (!\array_key_exists($required_key, $configuration)) {
         $this->logger->error('Could not find "@key" within the configuration at "@location"', [
           '@key' => $required_key,
@@ -62,9 +68,12 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
     return $configuration;
   }
 
+  /**
+   *
+   */
   protected function sendNotification(TranslatableMarkup $notification) {
 
-    if(($configuration = $this->getConfiguration())) {
+    if (($configuration = $this->getConfiguration())) {
       $client = new Client([
         'base_uri' => 'https://hooks.slack.com/',
       ]);
@@ -77,7 +86,7 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
         ]);
         $this->logger->notice('Sent slack notification.');
       }
-      catch(RequestException $e) {
+      catch (RequestException $e) {
         $this->logger->error('Unable to send slack notification: @message\n\n@stack_trace', [
           '@message' => $e->getMessage(),
           '@stack_trace' => $e->getTraceAsString(),
@@ -93,7 +102,7 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
 
     $notification = NULL;
 
-    if($source_branch !== $deployed_tag) {
+    if ($source_branch !== $deployed_tag) {
       $notification = $this->t('An updated deployment has been made to *@environment* using branch *@source_branch* as *@deployed_tag* on application *@application*.', [
         '@environment' => $environment,
         '@source_branch' => $source_branch,
@@ -146,4 +155,5 @@ class CloudhookSlackNotification extends CloudhookNotificationBase implements Po
       '@application' => $application,
     ]));
   }
+
 }

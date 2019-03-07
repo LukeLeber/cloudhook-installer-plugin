@@ -33,8 +33,9 @@ class UpdateDatabase extends CloudhookDrushPluginBase implements PostCodeDeployP
       (new Process(['drush', 'updatedb', '--yes']))->mustRun()->wait();
       $this->logger->notice('Finished running database updates.');
     }
-    catch(ProcessFailedException $e) {
+    catch (ProcessFailedException $e) {
       $this->logger->critical('Failed to run database updates!');
     }
   }
+
 }

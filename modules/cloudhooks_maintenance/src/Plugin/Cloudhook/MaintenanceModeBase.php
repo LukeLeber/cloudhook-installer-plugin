@@ -139,6 +139,6 @@ abstract class MaintenanceModeBase extends CloudhookPluginBase implements Contai
    * @return bool
    *   TRUE if maintenance mode should be on, otherwise FALSE.
    */
-  protected abstract function getMaintenanceModeState();
+  abstract protected function getMaintenanceModeState();
 
 }

@@ -3,14 +3,7 @@
 namespace Drupal\cloudhooks_notification\Plugin\Cloudhook;
 
 use Drupal\cloudhooks\CloudhookPluginBase;
-use Drupal\cloudhooks\Plugin\Cloudhook\PostCodeDeployPluginInterface;
-use Drupal\cloudhooks\Plugin\Cloudhook\PostCodeUpdatePluginInterface;
-use Drupal\cloudhooks\Plugin\Cloudhook\PostDbCopyPluginInterface;
-use Drupal\cloudhooks\Plugin\Cloudhook\PostFilesCopyPluginInterface;
-use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\State\StateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -60,4 +53,5 @@ abstract class CloudhookNotificationBase extends CloudhookPluginBase implements 
       $logger
     );
   }
+
 }

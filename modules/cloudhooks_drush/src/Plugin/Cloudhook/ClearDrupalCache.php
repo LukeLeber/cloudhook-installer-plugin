@@ -29,13 +29,13 @@ class ClearDrupalCache extends CloudhookDrushPluginBase implements PostCodeDeplo
    */
   public function onPostCodeDeploy($application, $environment, $source_branch, $deployed_tag, $repo_url, $repo_type) {
 
-    $this->logger->notice('Attempting to clear the Drupal cache.');
     try {
       (new Process(['drush', 'cr']))->mustRun()->wait();
-      $this->logger->notice('Finished clearing the Drupal cache.');
+      $this->logger->notice('Cleared the Drupal cache.');
     }
-    catch(ProcessFailedException $e) {
+    catch (ProcessFailedException $e) {
       $this->logger->critical('Failed to clear the Drupal cache!');
     }
   }
+
 }
